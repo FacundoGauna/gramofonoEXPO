@@ -1,22 +1,30 @@
 const needle = document.getElementById("needle");
 const disc = document.getElementById("disc");
 const music = document.getElementById("music");
+const enableSoundButton = document.getElementById("enableSound");
 
-let isPlaying = false; // Empieza en false para evitar problemas en móviles.
+let isPlaying = false;
 let isDragging = false;
 let rotation = null;
+let audioUnlocked = false;
 
-// Desbloquear reproducción en móviles
-document.addEventListener("touchstart", () => {
-    music.play();
-    setTimeout(() => {
-        music.pause();
-        music.currentTime = 0;
-    }, 500);
+// Crea un AudioContext para desbloquear el sonido en móviles
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const musicSource = audioContext.createMediaElementSource(music);
+musicSource.connect(audioContext.destination);
 
-    // Eliminar el listener después de la primera interacción
-    document.removeEventListener("touchstart", arguments.callee);
-}, { passive: true });
+// Botón para desbloquear el audio
+enableSoundButton.addEventListener("click", function () {
+    audioContext.resume().then(() => {
+        music.play().then(() => {
+            music.pause();
+            music.currentTime = 0;
+        }).catch(error => console.log("Error desbloqueando audio:", error));
+
+        audioUnlocked = true;
+        enableSoundButton.remove();
+    });
+});
 
 // Ajustar el punto de rotación de la aguja
 needle.style.transformOrigin = "top center";
@@ -29,7 +37,7 @@ function startDrag(e) {
 
 // Función para mover la aguja (solo hacia la izquierda)
 function moveNeedle(e) {
-    if (!isDragging) return;
+    if (!isDragging || !audioUnlocked) return;
 
     // Detectar si es touch o mouse y obtener posición X
     let clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -39,7 +47,7 @@ function moveNeedle(e) {
 
     // Calcular ángulo basado en la posición del dedo o ratón
     let angle = ((centerX - clientX) / centerX) * 2000; 
-    angle = Math.max(30, Math.min(65, angle)); // Limitar entre 0° y 30° (solo a la izquierda)
+    angle = Math.max(30, Math.min(65, angle)); // Limitar entre 30° y 65° (solo a la izquierda)
 
     // Aplicar la rotación sin afectar la posición de la aguja
     needle.style.transform = `rotate(${angle}deg)`;
