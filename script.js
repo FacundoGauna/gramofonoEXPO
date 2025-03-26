@@ -15,15 +15,23 @@ musicSource.connect(audioContext.destination);
 
 // Botón para desbloquear el audio
 enableSoundButton.addEventListener("click", function () {
+    console.log("Botón de activación presionado");
+
     audioContext.resume().then(() => {
+        console.log("AudioContext reanudado");
+
         music.play().then(() => {
+            console.log("Audio desbloqueado correctamente");
             music.pause();
             music.currentTime = 0;
-        }).catch(error => console.log("Error desbloqueando audio:", error));
+            audioUnlocked = true;
 
-        audioUnlocked = true;
-        enableSoundButton.remove();
-    });
+            // Retrasar la eliminación del botón para asegurar que el desbloqueo funciona
+            setTimeout(() => {
+                enableSoundButton.style.display = "none"; // Ocultar el botón en vez de eliminarlo
+            }, 100);
+        }).catch(error => console.log("Error desbloqueando audio:", error));
+    }).catch(error => console.log("Error reanudando AudioContext:", error));
 });
 
 // Ajustar el punto de rotación de la aguja
