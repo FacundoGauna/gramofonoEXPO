@@ -1,0 +1,123 @@
+/* General */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Georgia", serif; /* Fuente elegante y clásica */
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Título principal */
+h1 {
+    font: oblique bold 135% "Georgia", serif;
+    color: #382916be; /* Burdeos */
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+/* Subtítulo */
+h2 {
+    font-weight: bold; /* En negrita */
+    font-size: 1.3rem;
+    color: #3c291d; /* Marrón */
+}
+
+h3 {
+    font-weight: bolt; /* En negrita */
+    font-size: 1.1rem;
+    color: #533a19c7; /* Marrón */
+}
+
+/* Texto de instrucción */
+p {
+    font-weight: normal; /* Sin negrita */
+    font-size: 1rem; /* Más pequeño */
+    color: rgb(118, 72, 40);
+    white-space: nowrap; /* En una sola línea */
+}
+
+/* Contenedor del giradiscos */
+.turntable {
+    position: relative;
+    width: 60vw;
+    max-width: 300px;
+    height: 60vw;
+    max-height: 300px;
+    background: gray;
+    background-image: url("assets/vinilo-hardware.png");
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+body {
+    background-image: url("assets/fondogram1.jpg"); /* Asegúrate de que la imagen esté en la ruta correcta */
+    background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+
+/* Disco de vinilo */
+.disc {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    max-width: 250px;
+    max-height: 250px;
+    background: black;
+    background-image: url("assets/vinilo-maybe.png");
+    background-size: cover;
+    border-radius: 50%;
+    transition: transform 0.1s;
+    left: -10%;
+}
+
+/* Aguja del gramófono */
+.needle {
+    position: absolute;
+    top: 20%;
+    left: 70%;
+    width: 100%;
+    height: 50%;
+    max-width: 80px;
+    max-height: 150px;
+    background: transparent;
+    background-image: url("assets/vinilo-needle.png");
+    background-size: cover;
+    background-position: center;
+    transform-origin: top;
+    transition: transform 0.1s ease;
+    cursor: grab;
+}
+
+/* 📱 Estilo para móviles (4:3 vertical) */
+@media (max-width: 600px) {
+    .turntable {
+        width: 80vw;
+        height: 80vw;
+    }
+
+    .disc {
+        width: 75%;
+        height: 75%;
+    }
+
+    .needle {
+        width: 100%;
+        height: 50%;
+        top: 20%;
+        left: 70%;
+    }
+
+    h1 { font-size: 2.3rem; }
+    h2 { font-size: 1rem; }
+    h3 {font-size: 0.2rem;}
+    p { font-size: 0.8rem; } /* Aún más pequeño en móviles */
+}
