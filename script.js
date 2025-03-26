@@ -7,6 +7,11 @@ let isPlaying = false;
 let isDragging = false;
 let rotation = null;
 let audioUnlocked = false;
+let isDraggingNeedle = false; // Nuevo: para controlar el desplazamiento de la página
+
+// Variables para el desplazamiento de la página
+let startY = 0;
+let scrollY = 0;
 
 // Crea un AudioContext para desbloquear el sonido en móviles
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -45,6 +50,7 @@ needle.style.transformOrigin = "top center";
 function startDrag(e) {
     e.preventDefault();
     isDragging = true;
+    isDraggingNeedle = true; // Bloquea el desplazamiento de la página
 }
 
 // Función para mover la aguja (solo hacia la izquierda)
@@ -84,6 +90,7 @@ function moveNeedle(e) {
 function stopDrag(e) {
     e.preventDefault();
     isDragging = false;
+    isDraggingNeedle = false; // Permite el desplazamiento de la página nuevamente
 }
 
 // Agregar eventos de ratón y táctiles
@@ -108,3 +115,33 @@ function rotateDisc() {
     }
     animate();
 }
+
+// 🔹 Permitir desplazamiento en móviles y PC solo si NO se toca la aguja
+document.addEventListener("touchstart", (e) => {
+    if (!isDraggingNeedle) {
+        startY = e.touches[0].clientY;
+        scrollY = window.scrollY;
+    }
+}, { passive: false });
+
+document.addEventListener("touchmove", (e) => {
+    if (!isDraggingNeedle) {
+        let deltaY = e.touches[0].clientY - startY;
+        window.scrollTo(0, scrollY - deltaY);
+    }
+}, { passive: false });
+
+// Para el scroll en ordenador (mouse)
+document.addEventListener("mousedown", (e) => {
+    if (!isDraggingNeedle && e.button === 0) {
+        startY = e.clientY;
+        scrollY = window.scrollY;
+    }
+});
+
+document.addEventListener("mousemove", (e) => {
+    if (!isDraggingNeedle && e.buttons === 1) {
+        let deltaY = e.clientY - startY;
+        window.scrollTo(0, scrollY - deltaY);
+    }
+});
