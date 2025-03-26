@@ -139,3 +139,20 @@ body {
     h3 {font-size: 0.2rem;}
     p { font-size: 0.8rem; } /* Aún más pequeño en móviles */
 }
+
+/* Estilo para dispositivos en modo horizontal */
+@media (orientation: landscape) {
+    body {
+        height: auto;  /* Permitir que la altura se ajuste automáticamente */
+        min-height: 100vh;
+    }
+
+    h1 {
+        font-size: 2rem;  /* Ajustar el tamaño del título en landscape */
+        margin-bottom: 20px;
+    }
+
+    .turntable {
+        margin-top: 20px;  /* Agregar margen para que no se corte el contenido */
+    }
+}
