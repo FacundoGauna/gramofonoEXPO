@@ -13,8 +13,8 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const musicSource = audioContext.createMediaElementSource(music);
 musicSource.connect(audioContext.destination);
 
-// Botón para desbloquear el audio
-enableSoundButton.addEventListener("click", function () {
+// Función para desbloquear el audio (compatible con móvil y PC)
+function unlockAudio() {
     console.log("Botón de activación presionado");
 
     audioContext.resume().then(() => {
@@ -26,13 +26,17 @@ enableSoundButton.addEventListener("click", function () {
             music.currentTime = 0;
             audioUnlocked = true;
 
-            // Retrasar la eliminación del botón para asegurar que el desbloqueo funciona
+            // Ocultar el botón después de desbloquear el audio
             setTimeout(() => {
-                enableSoundButton.style.display = "none"; // Ocultar el botón en vez de eliminarlo
+                enableSoundButton.style.display = "none"; // Ocultar en vez de eliminar
             }, 100);
         }).catch(error => console.log("Error desbloqueando audio:", error));
     }).catch(error => console.log("Error reanudando AudioContext:", error));
-});
+}
+
+// Añadir eventos para compatibilidad con móviles y PC
+enableSoundButton.addEventListener("click", unlockAudio);
+enableSoundButton.addEventListener("touchstart", unlockAudio, { passive: false });
 
 // Ajustar el punto de rotación de la aguja
 needle.style.transformOrigin = "top center";
